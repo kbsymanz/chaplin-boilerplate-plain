@@ -2,8 +2,11 @@
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Chaplin Boilerplate Application</title>
+  <title>Fortunes Client using Chaplin</title>
   <style>body { font-family: sans-serif; }</style>
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+  <link rel="stylesheet" href="css/fortunes.css">
   <script src="js/vendor/require-2.1.5.js"></script>
   <script>
   // Configure the AMD module loader
@@ -17,7 +20,8 @@
       backbone: 'vendor/backbone-1.0.0',
       handlebars: 'vendor/handlebars-1.0.rc.4',
       text: 'vendor/require-text-2.0.6',
-      chaplin: 'vendor/chaplin-0.9.0'
+      chaplin: 'vendor/chaplin-0.9.0',
+      bootstrap: 'vendor/bootstrap.min'
     },
     // Underscore and Backbone are not AMD-capable per default,
     // so we need to use the AMD wrapping of RequireJS
@@ -31,7 +35,12 @@
       },
       handlebars: {
         exports: 'Handlebars'
-      }
+      },
+      bootstrap: {
+        deps: ['jquery'],
+        exports: "$.fn.popover"
+      },
+      enforceDefine: true
     }
     // For easier development, disable browser caching
     // Of course, this should be removed in a production environment

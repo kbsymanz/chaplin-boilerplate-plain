@@ -1,5 +1,25 @@
-<h1>Chaplin Boilerplate Application</h1>
+<div class="container">
+  <div class="page-header">
+    <h1>Fortunes Chaplin <small>Using Chaplinjs, Requirejs, Bootstrap, and Socket.io</small>
+    <a id="about-toggle" class="label pull-right muted" data-toggle="modal" data-target="#about">About</a></h1>
+  </div>
 
-<p>This Chaplin example provides an app scaffold using RequireJS as module loader. Handlebars is used as templating engine. The templates are loaded on demand using the RequireJS text plugin.</p>
+  <div id="about" class="modal hide fade">
+    <h3>About Fortunes Chaplin</h3>
+    <p>Doing is learning and that is what this is all about - writing similar front-ends against the same backend in order to get a sense of what each Backbone based framework is like to develop with. This front end is based upon <a href="https://github.com/chaplinjs/chaplin-boilerplate-plain.git">chaplin-boilerplate-plain</a>.</p>
 
-<div id="main-container"></div>
+    <p>All of the frameworks should have some things in common. They should all be Backbonejs frameworks or extensions. They should all use Requirejs as well. Regarding communication with the server, they should all use Socket.io for everything. Finally, they should all be hosted by the same <a href="https://github.com/kbsymanz/fortunes-server.git">Fortunes Server</a> built upon Nodejs and Express.</p>
+
+    <p>For a related project that offers a lot more implementations, see <a href="http://todomvc.com/">TodoMVC</a>.</p>
+  </div>
+
+  <div class="alert fade in">
+    <button type="button" class="close" data-dismiss="alert">X</button>
+    <strong>Watch the code!</strong> Don't get side-tracked by whether or not you like the design. That is not the point. The structure of the code is what is being featured.
+  </div>
+
+  <!-- main content -->
+  <div class="row">
+    <div id="main-container"></div>
+  </div>
+</div>

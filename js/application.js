@@ -1,6 +1,7 @@
 define([
   'chaplin',
-  'routes'
+  'routes',
+  'bootstrap'
 ], function(Chaplin, routes) {
   'use strict';
 
