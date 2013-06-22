@@ -1,8 +1,9 @@
 define([
   'chaplin',
   'routes',
+  'lib/sockets',
   'bootstrap'
-], function(Chaplin, routes) {
+], function(Chaplin, routes, sockets) {
   'use strict';
 
   // The application object
@@ -39,6 +40,9 @@ define([
 
       // Mediator is a global message broker which implements pub-sub pattern.
       this.initMediator();
+
+      // Establish the Socket.io connection.
+      sockets.initialize();
 
       // Actually start routing.
       this.startRouting();

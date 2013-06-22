@@ -21,7 +21,8 @@
       handlebars: 'vendor/handlebars-1.0.rc.4',
       text: 'vendor/require-text-2.0.6',
       chaplin: 'vendor/chaplin-0.9.0',
-      bootstrap: 'vendor/bootstrap.min'
+      bootstrap: 'vendor/bootstrap.min',
+      socketio: '/socket.io/socket.io'  // not a static file
     },
     // Underscore and Backbone are not AMD-capable per default,
     // so we need to use the AMD wrapping of RequireJS
@@ -39,6 +40,9 @@
       bootstrap: {
         deps: ['jquery'],
         exports: "$.fn.popover"
+      },
+      socketio: {
+        exports: 'io'
       },
       enforceDefine: true
     }
