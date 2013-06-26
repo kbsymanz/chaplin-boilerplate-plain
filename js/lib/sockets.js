@@ -6,6 +6,7 @@ define([
 
   var sockets = {}
     , client
+    , isConnected = false
     ;
 
   /* --------------------------------------------------------
@@ -89,6 +90,8 @@ define([
     // Activate event handling.
     // --------------------------------------------------------
     client.on('connect', function() {
+      isConnected = true;
+
       console.log('Connected');
 
       Chaplin.mediator.subscribe('search', search);
@@ -107,7 +110,10 @@ define([
     // Deactivate event handling.
     // --------------------------------------------------------
     client.on('disconnect', function() {
+      isConnected = false;
+
       console.log('Disconnect');
+
       Chaplin.mediator.publish('offline');
 
       Chaplin.mediator.unsubscribe('search', search);
@@ -119,6 +125,18 @@ define([
       Chaplin.mediator.unsubscribe('randomInterval', search);
       console.log('Unsubscribed from randomInterval');
     });
+  };
+
+  /* --------------------------------------------------------
+   * isOnline()
+   *
+   * Is the socket connected to the server now?
+   *
+   * param       undefined
+   * return      boolean
+   * -------------------------------------------------------- */
+  sockets.isOnline = function() {
+    return isConnected;
   };
 
   return sockets;

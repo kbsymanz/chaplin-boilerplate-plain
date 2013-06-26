@@ -1,4 +1,16 @@
-#about {
+.about {
   padding: 10px;
+}
+
+.random-list ul {
+  margin: 0 0 10px 0;
+  border: 1px solid #AAA;
+  padding: 5px 10px;
+  min-height: 300px;
+}
+
+.random-list li {
+  list-style-type: none;
+  padding-bottom: 10px;
 }
 

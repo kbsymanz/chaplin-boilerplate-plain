@@ -10,8 +10,7 @@ define([
 
     className: 'random',
 
-    // Automatically append to the DOM on render
-    region: 'random',
+    tagName: 'li',
 
     // Save the template string in a prototype property.
     // This is overwritten with the compiled template function.
@@ -26,7 +25,7 @@ define([
       // model is populated from the server and the current
       // fortune is replaced with another.
       // --------------------------------------------------------
-      this.listenTo(this.model, 'change', this.render);
+      //this.listenTo(this.model, 'change', this.render);
     }
   });
 

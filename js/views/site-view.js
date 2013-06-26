@@ -7,7 +7,7 @@ define(['views/base/view', 'text!templates/site.hbs'], function(View, template) 
     regions: {
       //'#history-container': 'history',
       //'#search-container': 'search',
-      '#random-container': 'random'
+      '#random-container': 'random-list'
     },
     template: template
   });
