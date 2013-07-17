@@ -67,8 +67,11 @@ define([
 
         // --------------------------------------------------------
         // Instruct the server to send fortunes are regular intervals.
+        // Name the request so that the server can discern if the job
+        // is already running when/if the browser refreshes.
         // --------------------------------------------------------
         options.interval = fortuneInterval;
+        options.name = 'RandomController';
         setIntervals(this, options);
       } else {
         // --------------------------------------------------------

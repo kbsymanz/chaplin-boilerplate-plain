@@ -75,6 +75,22 @@ define([
   };
 
   /* --------------------------------------------------------
+   * sessionExpired()
+   *
+   * Simplistic implementation to handle session expiration.
+   *
+   * param       location - the url of the login page possibly
+   * return      undefined
+   * -------------------------------------------------------- */
+  var sessionExpired = function(location) {
+    alert('Session has expired. Please login again.');
+    console.dir(location);
+    if (location) {
+      window.location = location[0];
+    }
+  };
+
+  /* --------------------------------------------------------
    * initialize()
    *
    * Public: initialize communications with the server and
@@ -95,13 +111,13 @@ define([
       console.log('Connected');
 
       Chaplin.mediator.subscribe('search', search);
-      console.log('Subscribed to search');
+      //console.log('Subscribed to search');
 
       Chaplin.mediator.subscribe('random', random);
-      console.log('Subscribed to random');
+      //console.log('Subscribed to random');
 
       Chaplin.mediator.subscribe('randomInterval', randomInterval);
-      console.log('Subscribed to randomInterval');
+      //console.log('Subscribed to randomInterval');
 
       Chaplin.mediator.publish('online');
     });
@@ -117,14 +133,36 @@ define([
       Chaplin.mediator.publish('offline');
 
       Chaplin.mediator.unsubscribe('search', search);
-      console.log('Unsubscribed from search');
+      //console.log('Unsubscribed from search');
 
-      Chaplin.mediator.unsubscribe('random', search);
-      console.log('Unsubscribed from random');
+      Chaplin.mediator.unsubscribe('random', random);
+      //console.log('Unsubscribed from random');
 
-      Chaplin.mediator.unsubscribe('randomInterval', search);
-      console.log('Unsubscribed from randomInterval');
+      Chaplin.mediator.unsubscribe('randomInterval', randomInterval);
+      //console.log('Unsubscribed from randomInterval');
     });
+
+    client.on('sessionExpired', sessionExpired);
+
+    client.on('reconnect', function() {
+      console.log('reconnect');
+    });
+    client.on('reconnecting', function() {
+      console.log('reconnecting');
+    });
+    client.on('connecting', function() {
+      console.log('connecting');
+    });
+    client.on('connect_failed', function() {
+      console.log('connect_failed');
+    });
+    client.on('reconnect_failed', function() {
+      console.log('reconnect_failed');
+    });
+    client.on('close', function() {
+      console.log('close');
+    });
+
   };
 
   /* --------------------------------------------------------
