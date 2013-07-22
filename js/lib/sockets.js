@@ -5,7 +5,7 @@ define([
   'use strict';
 
   var sockets = {}
-    , client
+    , server
     , isConnected = false
     ;
 
@@ -24,7 +24,7 @@ define([
       callback = options;
       options = {};
     }
-    client.emit('search', options, function(data) {
+    server.emit('search', options, function(data) {
       callback(data);
     });
   };
@@ -44,7 +44,7 @@ define([
       callback = options;
       options = {};
     }
-    client.emit('random', options, function(data) {
+    server.emit('random', options, function(data) {
       callback(data);
     });
   };
@@ -69,8 +69,8 @@ define([
     if (! options.interval) {
       options.interval = 60;    // default seconds between fortunes
     }
-    client.emit('random', options, function(msgKey) {
-      client.on(msgKey, callback);
+    server.emit('random', options, function(msgKey) {
+      server.on(msgKey, callback);
     });
   };
 
@@ -100,12 +100,12 @@ define([
    * return      undefined
    * -------------------------------------------------------- */
   sockets.initialize = function() {
-    client = io.connect('/fortunes');
+    server = io.connect('/fortunes');
 
     // --------------------------------------------------------
     // Activate event handling.
     // --------------------------------------------------------
-    client.on('connect', function() {
+    server.on('connect', function() {
       isConnected = true;
 
       console.log('Connected');
@@ -125,7 +125,7 @@ define([
     // --------------------------------------------------------
     // Deactivate event handling.
     // --------------------------------------------------------
-    client.on('disconnect', function() {
+    server.on('disconnect', function() {
       isConnected = false;
 
       console.log('Disconnect');
@@ -142,24 +142,24 @@ define([
       //console.log('Unsubscribed from randomInterval');
     });
 
-    client.on('sessionExpired', sessionExpired);
+    server.on('sessionExpired', sessionExpired);
 
-    client.on('reconnect', function() {
+    server.on('reconnect', function() {
       console.log('reconnect');
     });
-    client.on('reconnecting', function() {
+    server.on('reconnecting', function() {
       console.log('reconnecting');
     });
-    client.on('connecting', function() {
+    server.on('connecting', function() {
       console.log('connecting');
     });
-    client.on('connect_failed', function() {
+    server.on('connect_failed', function() {
       console.log('connect_failed');
     });
-    client.on('reconnect_failed', function() {
+    server.on('reconnect_failed', function() {
       console.log('reconnect_failed');
     });
-    client.on('close', function() {
+    server.on('close', function() {
       console.log('close');
     });
 
