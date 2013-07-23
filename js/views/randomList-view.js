@@ -25,7 +25,6 @@ define([
 
     initialize: function(options) {
       RandomListView.__super__.initialize.apply(this, arguments);
-
     }
   });
 

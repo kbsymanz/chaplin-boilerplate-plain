@@ -1,4 +1,4 @@
-define(['views/base/view', 'text!templates/site.hbs'], function(View, template) {
+define(['views/base/view', 'text!templates/site-view.hbs'], function(View, template) {
   'use strict';
 
   var SiteView = View.extend({
@@ -6,7 +6,7 @@ define(['views/base/view', 'text!templates/site.hbs'], function(View, template) 
     id: 'site-container',
     regions: {
       //'#history-container': 'history',
-      //'#search-container': 'search',
+      '#search-container': 'search',
       '#random-container': 'random-list'
     },
     template: template

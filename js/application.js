@@ -1,9 +1,11 @@
 define([
   'chaplin',
   'routes',
+  'models/searchList',
+  'models/randomList',
   'lib/sockets',
   'bootstrap'
-], function(Chaplin, routes, sockets) {
+], function(Chaplin, routes, SearchList, RandomList, sockets) {
   'use strict';
 
   // The application object
@@ -60,6 +62,19 @@ define([
       Chaplin.mediator.user = null;
       // Add additional application-specific properties and methods
       // Seal the mediator
+
+      // --------------------------------------------------------
+      // Our history of searches and their respective search
+      // results that are globally available outside of the domain
+      // of any one controller.
+      // --------------------------------------------------------
+      Chaplin.mediator.searchList = new SearchList();
+
+      // --------------------------------------------------------
+      // Collection to hold the fortunes that the server pushes.
+      // --------------------------------------------------------
+      Chaplin.mediator.randomList = new RandomList();
+
       Chaplin.mediator.seal();
     }
   });
