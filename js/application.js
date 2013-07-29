@@ -3,8 +3,7 @@ define([
   'routes',
   'models/searchList',
   'models/randomList',
-  'lib/sockets',
-  'bootstrap'
+  'lib/sockets'
 ], function(Chaplin, routes, SearchList, RandomList, sockets) {
   'use strict';
 

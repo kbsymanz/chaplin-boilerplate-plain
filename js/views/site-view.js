@@ -5,9 +5,9 @@ define(['views/base/view', 'text!templates/site-view.hbs'], function(View, templ
     container: 'body',
     id: 'site-container',
     regions: {
-      //'#history-container': 'history',
-      '#search-container': 'search',
-      '#random-container': 'random-list'
+      '#history-container': 'history-section',
+      '#search-container': 'search-section',
+      '#random-container': 'random-section'
     },
     template: template
   });

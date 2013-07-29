@@ -10,7 +10,7 @@ define([
       this.model = new Search();
       this.view = new SearchView({
         model: this.model
-        , region: 'search'
+        , region: 'search-section'
       });
     }
   });

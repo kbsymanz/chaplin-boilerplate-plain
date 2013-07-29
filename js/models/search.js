@@ -24,7 +24,6 @@ define([
 
     initialize: function(attributes, options) {
       Model.prototype.initialize.apply(this, arguments);
-      this.set('searchTime', Date.now());
 
       this.on('change:term', this.doSearch);
     },
@@ -36,13 +35,14 @@ define([
     doSearch: function(model, value, options) {
       var opts = {}
         ;
+      this.set('searchTime', Date.now());
       opts.term = value;
       model.unset('results');
       model.set('isSearching', true);
       setTimeout(function() {
         Chaplin.mediator.publish('search', opts, function(data) {
-          model.set('results', lf2br(data));
           model.set('isSearching', false);
+          model.set('results', lf2br(data));
         });
       }, serverDelay);
     }

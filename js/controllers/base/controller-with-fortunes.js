@@ -1,11 +1,13 @@
 define([
   'chaplin',
+  'lib/sockets',
   'views/site-view',
-  'models/random',
   'views/randomList-view',
+  'views/historyList-view',
+  'models/random',
   'models/randomList',
-  'lib/sockets'
-], function(Chaplin, SiteView, Random, RandomListView, RandomList, Sockets) {
+  'bootstrap'       // Force Bootstrap JS to load
+], function(Chaplin, Sockets, SiteView, RandomListView, HistoryListView, Random, RandomList) {
   'use strict';
 
   var fortuneInterval = 10
@@ -71,7 +73,7 @@ define([
       // as a base.
       // --------------------------------------------------------
       this.collection = Chaplin.mediator.randomList;
-      this.compose('random-list', RandomListView, {collection: this.collection});
+      this.compose('random-section', RandomListView, {collection: this.collection});
 
       if (Sockets.isOnline()) {
         // --------------------------------------------------------
@@ -97,6 +99,12 @@ define([
           setIntervals(self, options);
         });
       }
+
+      // --------------------------------------------------------
+      // The history section which shows all of the prior searches.
+      // --------------------------------------------------------
+      this.compose('history-section', HistoryListView, {collection: Chaplin.mediator.searchList});
+
     }
   });
 

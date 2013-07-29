@@ -11,12 +11,12 @@ define([
 
     itemView: RandomView,
 
-    listSelector: 'div.random-list ul',
+    listSelector: 'div.random-section ul',
 
-    className: 'random-list',
+    className: 'random-section',
 
     // Automatically append to the DOM on render
-    region: 'random-list',
+    region: 'random-section',
 
     // Save the template string in a prototype property.
     // This is overwritten with the compiled template function.

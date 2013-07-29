@@ -15,14 +15,15 @@
     baseUrl: './js/',
     // Specify the paths of vendor libraries
     paths: {
-      jquery: 'vendor/jquery-1.9.1',
-      underscore: 'vendor/lodash-1.2.0',
-      backbone: 'vendor/backbone-1.0.0',
-      handlebars: 'vendor/handlebars-1.0.rc.4',
-      text: 'vendor/require-text-2.0.6',
-      chaplin: 'vendor/chaplin-0.9.0',
-      bootstrap: 'vendor/bootstrap.min',
-      socketio: '/socket.io/socket.io'  // not a static file
+      jquery: 'vendor/jquery-1.9.1'
+      , underscore: 'vendor/lodash-1.2.0'
+      , backbone: 'vendor/backbone-1.0.0'
+      , handlebars: 'vendor/handlebars-1.0.rc.4'
+      , text: 'vendor/require-text-2.0.6'
+      , chaplin: 'vendor/chaplin-0.9.0'
+      , bootstrap: 'vendor/bootstrap.min'
+      , socketio: '/socket.io/socket.io'  // not a static file
+      , 'backbone.localStorage': 'vendor/backbone.localStorage'
     },
     // Underscore and Backbone are not AMD-capable per default,
     // so we need to use the AMD wrapping of RequireJS
@@ -32,6 +33,10 @@
       },
       backbone: {
         deps: ['underscore', 'jquery'],
+        exports: 'Backbone'
+      },
+      'backbone.localStorage': {
+        deps: ['backbone'],
         exports: 'Backbone'
       },
       handlebars: {
