@@ -35,7 +35,7 @@ define([
     doSearch: function(model, value, options) {
       var opts = {}
         ;
-      this.set('searchTime', Date.now());
+      model.set('searchTime', Date.now());
       opts.term = value;
       model.unset('results');
       model.set('isSearching', true);

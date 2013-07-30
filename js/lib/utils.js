@@ -12,10 +12,14 @@ define([
 
   // Add additional application-specific properties and methods
 
-  // _(utils).extend({
-  //   someProperty: 'foo',
-  //   someMethod: function() {}
-  // });
+  _(utils).extend({
+    //someProperty: 'foo',
+    debug: function(msg) {
+      if (Chaplin.mediator.debugging) {
+        console.log(msg);
+      }
+    }
+  });
 
   return utils;
 });

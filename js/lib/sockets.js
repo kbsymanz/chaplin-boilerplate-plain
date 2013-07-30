@@ -1,7 +1,8 @@
 define([
   'chaplin',
-  'socketio'
-], function(Chaplin, io) {
+  'socketio',
+  'lib/utils'
+], function(Chaplin, io, Utils) {
   'use strict';
 
   var sockets = {}
@@ -108,16 +109,16 @@ define([
     server.on('connect', function() {
       isConnected = true;
 
-      console.log('Connected');
+      Utils.debug('Connected');
 
       Chaplin.mediator.subscribe('search', search);
-      //console.log('Subscribed to search');
+      //Utils.debug('Subscribed to search');
 
       Chaplin.mediator.subscribe('random', random);
-      //console.log('Subscribed to random');
+      //Utils.debug('Subscribed to random');
 
       Chaplin.mediator.subscribe('randomInterval', randomInterval);
-      //console.log('Subscribed to randomInterval');
+      //Utils.debug('Subscribed to randomInterval');
 
       Chaplin.mediator.publish('online');
     });
@@ -128,39 +129,39 @@ define([
     server.on('disconnect', function() {
       isConnected = false;
 
-      console.log('Disconnect');
+      Utils.debug('Disconnect');
 
       Chaplin.mediator.publish('offline');
 
       Chaplin.mediator.unsubscribe('search', search);
-      //console.log('Unsubscribed from search');
+      //Utils.debug('Unsubscribed from search');
 
       Chaplin.mediator.unsubscribe('random', random);
-      //console.log('Unsubscribed from random');
+      //Utils.debug('Unsubscribed from random');
 
       Chaplin.mediator.unsubscribe('randomInterval', randomInterval);
-      //console.log('Unsubscribed from randomInterval');
+      //Utils.debug('Unsubscribed from randomInterval');
     });
 
     server.on('sessionExpired', sessionExpired);
 
     server.on('reconnect', function() {
-      console.log('reconnect');
+      Utils.debug('reconnect');
     });
     server.on('reconnecting', function() {
-      console.log('reconnecting');
+      Utils.debug('reconnecting');
     });
     server.on('connecting', function() {
-      console.log('connecting');
+      Utils.debug('connecting');
     });
     server.on('connect_failed', function() {
-      console.log('connect_failed');
+      Utils.debug('connect_failed');
     });
     server.on('reconnect_failed', function() {
-      console.log('reconnect_failed');
+      Utils.debug('reconnect_failed');
     });
     server.on('close', function() {
-      console.log('close');
+      Utils.debug('close');
     });
 
   };

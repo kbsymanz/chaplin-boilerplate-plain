@@ -74,6 +74,11 @@ define([
       // --------------------------------------------------------
       Chaplin.mediator.randomList = new RandomList();
 
+      // --------------------------------------------------------
+      // Whether debugging is turned on or not.
+      // --------------------------------------------------------
+      Chaplin.mediator.debugging = true;
+
       Chaplin.mediator.seal();
     }
   });

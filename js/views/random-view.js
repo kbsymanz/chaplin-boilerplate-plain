@@ -19,13 +19,6 @@ define([
 
     initialize: function(options) {
       RandomView.__super__.initialize.apply(this, arguments);
-
-      // --------------------------------------------------------
-      // Respond when the model changes. This occurs when the
-      // model is populated from the server and the current
-      // fortune is replaced with another.
-      // --------------------------------------------------------
-      //this.listenTo(this.model, 'change', this.render);
     }
   });
 

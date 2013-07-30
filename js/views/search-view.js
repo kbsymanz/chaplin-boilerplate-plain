@@ -34,18 +34,6 @@ define([
       this.listenTo(this.model, 'change:results', this.render);
       this.listenTo(this.model, 'change:isSearching', this.render);
       this.listenTo(this.model, 'change:results', this.save2List);
-
-      // --------------------------------------------------------
-      // We display prior searches by listening for requests for
-      // the same. We replace our current model with the model
-      // that the requestor sends us.
-      // --------------------------------------------------------
-      Chaplin.mediator.subscribe('search:display', this.displaySearch);
-    },
-
-    displaySearch: function() {
-      console.log('SearchView#displaySearch()');
-
     },
 
     // --------------------------------------------------------
@@ -73,7 +61,6 @@ define([
     // --------------------------------------------------------
     save2List: function(model, value, options) {
       var newModel
-        , result
         ;
       if (value) {
         newModel = model.clone();
