@@ -13,21 +13,37 @@ define([
   var SearchList = Collection.extend({
     model: Search,
 
-    localStorage: new LocalStorage('SearchList'),
-
     initialize: function() {
-      var self = this;
+      var self = this
+        ;
+
       SearchList.__super__.initialize.apply(this, arguments);
 
-      this.on('add', this.adding, this);
+      // --------------------------------------------------------
+      // localStorage is segregated by username, which allows
+      // the historical searches to be displayed for the appropriate
+      // users but search results are not hidden from other users
+      // for the curious. In other words, the browser localStorage
+      // is wide open from a security perspective so might want to
+      // delete localStorage when a user logs out.
+      // --------------------------------------------------------
+      Chaplin.mediator.whoami(function(err, username) {
+        if (err) {
+          Utils.debug(err);
+          return false;
+        }
+        self.localStorage = new LocalStorage(username + ':SearchList');
 
-      // --------------------------------------------------------
-      // Load any prior searches from localStorage in case this
-      // page was refreshed, etc.
-      // --------------------------------------------------------
-      _.each(this.localStorage.findAll(), function(m) {
-        self.add(m, [{add: false}]);
+        // --------------------------------------------------------
+        // Load any prior searches from localStorage in case this
+        // page was refreshed, etc.
+        // --------------------------------------------------------
+        _.each(self.localStorage.findAll(), function(m) {
+          self.add(m, [{add: false}]);
+        });
       });
+
+      this.on('add', this.adding, this);
     },
 
     adding: function(model, collection, options) {

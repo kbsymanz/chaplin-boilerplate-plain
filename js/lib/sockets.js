@@ -1,14 +1,43 @@
 define([
   'chaplin',
+  'underscore',
   'socketio',
   'lib/utils'
-], function(Chaplin, io, Utils) {
+], function(Chaplin, _, io, Utils) {
   'use strict';
 
   var sockets = {}
     , server
     , isConnected = false
     ;
+
+  /* --------------------------------------------------------
+   * whoami()
+   *
+   * Who does the server say that I am? Returns the username
+   * to the caller. Caches the result so that a server call
+   * is not needed everytime.
+   *
+   * param       callback
+   * param       checkServer - don't trust cache; check the server again
+   * return      undefined
+   * -------------------------------------------------------- */
+  var whoami = null;
+  sockets.whoami = function(cb, checkServer) {
+    if (! _.isFunction(cb)) {
+      Utils.debug('Error: Sockets.whoami() called without a callback.');
+      return;
+    }
+    if (! checkServer && whoami) return cb(null, whoami);
+    server.emit('whoami', function(err, username) {
+      if (err) {
+        Utils.debug(err);
+        return cb(err);
+      }
+      whoami = username;
+      return cb(null, username);
+    });
+  };
 
   /* --------------------------------------------------------
    * search()
@@ -97,30 +126,41 @@ define([
    * Public: initialize communications with the server and
    * listen for client-side events.
    *
-   * param       undefined
+   * param       callback   callback when done
    * return      undefined
    * -------------------------------------------------------- */
-  sockets.initialize = function() {
+  sockets.initialize = function(callback) {
     server = io.connect('/fortunes');
 
     // --------------------------------------------------------
     // Activate event handling.
     // --------------------------------------------------------
     server.on('connect', function() {
-      isConnected = true;
 
       Utils.debug('Connected');
 
-      Chaplin.mediator.subscribe('search', search);
-      //Utils.debug('Subscribed to search');
+      // --------------------------------------------------------
+      // Precache the answer.
+      // --------------------------------------------------------
+      sockets.whoami(function(err, username) {
 
-      Chaplin.mediator.subscribe('random', random);
-      //Utils.debug('Subscribed to random');
+        Chaplin.mediator.subscribe('search', search);
+        //Utils.debug('Subscribed to search');
 
-      Chaplin.mediator.subscribe('randomInterval', randomInterval);
-      //Utils.debug('Subscribed to randomInterval');
+        Chaplin.mediator.subscribe('random', random);
+        //Utils.debug('Subscribed to random');
 
-      Chaplin.mediator.publish('online');
+        Chaplin.mediator.subscribe('randomInterval', randomInterval);
+        //Utils.debug('Subscribed to randomInterval');
+
+        Chaplin.mediator.publish('online');
+        Utils.debug('Online');
+
+        isConnected = true;
+
+        callback();
+
+      }, true);
     });
 
     // --------------------------------------------------------
@@ -132,6 +172,7 @@ define([
       Utils.debug('Disconnect');
 
       Chaplin.mediator.publish('offline');
+      Utils.debug('Offline');
 
       Chaplin.mediator.unsubscribe('search', search);
       //Utils.debug('Unsubscribed from search');

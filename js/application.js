@@ -1,10 +1,11 @@
 define([
   'chaplin',
+  'lib/utils',
+  'lib/sockets',
   'routes',
   'models/searchList',
-  'models/randomList',
-  'lib/sockets'
-], function(Chaplin, routes, SearchList, RandomList, sockets) {
+  'models/randomList'
+], function(Chaplin, Utils, Sockets, routes, SearchList, RandomList) {
   'use strict';
 
   // The application object
@@ -16,6 +17,13 @@ define([
     title: 'Chaplin Example Application',
 
     initialize: function() {
+      var self = this;
+
+      // --------------------------------------------------------
+      // Whether debugging is turned on or not.
+      // --------------------------------------------------------
+      Chaplin.mediator.debugging = true;
+
       // Call the parent constructor.
       Chaplin.Application.prototype.initialize.apply(this, arguments);
 
@@ -39,28 +47,46 @@ define([
       // Composer grants the ability for views and stuff to be persisted.
       this.initComposer();
 
-      // Mediator is a global message broker which implements pub-sub pattern.
-      this.initMediator();
+      // Establish the Socket.io connection and don't start the rest until the
+      // Socket.io connection is established.
+      Sockets.initialize(function() {
+        // Mediator is a global message broker which implements pub-sub pattern.
+        self.initMediator(function() {
+          // Actually start routing.
+          Utils.debug('Starting routing');
+          self.startRouting();
 
-      // Establish the Socket.io connection.
-      sockets.initialize();
-
-      // Actually start routing.
-      this.startRouting();
-
-      // Freeze the application instance to prevent further changes.
-      if (Object.freeze) Object.freeze(this);
+          // Freeze the application instance to prevent further changes.
+          if (Object.freeze) Object.freeze(self);
+        });
+      });
     },
 
     // Create additional mediator properties
+    // Note: Socket.initialize() creates some too.
     // -------------------------------------
-    initMediator: function() {
+    initMediator: function(callback) {
+
       // Add additional application-specific properties and methods
       // e.g. mediator.prop = null
       // Create a user property
-      Chaplin.mediator.user = null;
       // Add additional application-specific properties and methods
       // Seal the mediator
+
+      // --------------------------------------------------------
+      // Function to report whether we have a connection to the
+      // server at the moment.
+      // --------------------------------------------------------
+      Chaplin.mediator.isOnline = function() {
+        return Sockets.isOnline();
+      };
+
+      // --------------------------------------------------------
+      // Report who the server says that we are, i.e. the username.
+      // --------------------------------------------------------
+      Chaplin.mediator.whoami = function(cb, checkServer) {
+        Sockets.whoami(cb, checkServer);
+      };
 
       // --------------------------------------------------------
       // Our history of searches and their respective search
@@ -74,12 +100,9 @@ define([
       // --------------------------------------------------------
       Chaplin.mediator.randomList = new RandomList();
 
-      // --------------------------------------------------------
-      // Whether debugging is turned on or not.
-      // --------------------------------------------------------
-      Chaplin.mediator.debugging = true;
-
       Chaplin.mediator.seal();
+
+      _.isFunction(callback) && callback();
     }
   });
 
