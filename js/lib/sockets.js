@@ -9,6 +9,9 @@ define([
   var sockets = {}
     , server
     , isConnected = false
+    , isSubSearch = false
+    , isSubRandom = false
+    , isSubRandomInt = false
     ;
 
   /* --------------------------------------------------------
@@ -54,8 +57,11 @@ define([
       callback = options;
       options = {};
     }
+    if (! isOnline()) {
+      return callback('Cannot search because we are currently offline.');
+    }
     server.emit('search', options, function(data) {
-      callback(data);
+      callback(null, data);
     });
   };
 
@@ -130,37 +136,63 @@ define([
    * return      undefined
    * -------------------------------------------------------- */
   sockets.initialize = function(callback) {
+    var isInInitialize = true;
+
+    // --------------------------------------------------------
+    // Announce for debugging when we are ready or not.
+    // --------------------------------------------------------
+    Chaplin.mediator.subscribe('online', function() {
+      Utils.debug('Online');
+    });
+    Chaplin.mediator.subscribe('offline', function() {
+      Utils.debug('Offline');
+    });
+
+    // --------------------------------------------------------
+    // We listen on a specific channel.
+    // --------------------------------------------------------
     server = io.connect('/fortunes');
 
     // --------------------------------------------------------
     // Activate event handling.
     // --------------------------------------------------------
     server.on('connect', function() {
+      isConnected = true;
 
-      Utils.debug('Connected');
+      Utils.debug('Connect');
 
       // --------------------------------------------------------
       // Precache the answer.
       // --------------------------------------------------------
       sockets.whoami(function(err, username) {
 
-        Chaplin.mediator.subscribe('search', search);
-        //Utils.debug('Subscribed to search');
+        if (! isSubSearch) {
+          Chaplin.mediator.subscribe('search', search);
+          isSubSearch = true;
+        }
 
-        Chaplin.mediator.subscribe('random', random);
-        //Utils.debug('Subscribed to random');
+        if (! isSubRandom) {
+          Chaplin.mediator.subscribe('random', random);
+          isSubRandom = true;
+        }
 
-        Chaplin.mediator.subscribe('randomInterval', randomInterval);
-        //Utils.debug('Subscribed to randomInterval');
+        if (! isSubRandomInt) {
+          Chaplin.mediator.subscribe('randomInterval', randomInterval);
+          isSubRandomInt = true;
+        }
 
         Chaplin.mediator.publish('online');
-        Utils.debug('Online');
 
-        isConnected = true;
+        // --------------------------------------------------------
+        // Only call the initialize callback once, not everytime
+        // the connection is re-established.
+        // --------------------------------------------------------
+        if (isInInitialize) {
+          isInInitialize = false;
+          callback();
+        }
 
-        callback();
-
-      }, true);
+      }, isInInitialize);   // force whoami() to contact the server on initialize() only
     });
 
     // --------------------------------------------------------
@@ -172,16 +204,6 @@ define([
       Utils.debug('Disconnect');
 
       Chaplin.mediator.publish('offline');
-      Utils.debug('Offline');
-
-      Chaplin.mediator.unsubscribe('search', search);
-      //Utils.debug('Unsubscribed from search');
-
-      Chaplin.mediator.unsubscribe('random', random);
-      //Utils.debug('Unsubscribed from random');
-
-      Chaplin.mediator.unsubscribe('randomInterval', randomInterval);
-      //Utils.debug('Unsubscribed from randomInterval');
     });
 
     server.on('sessionExpired', sessionExpired);
@@ -215,7 +237,7 @@ define([
    * param       undefined
    * return      boolean
    * -------------------------------------------------------- */
-  sockets.isOnline = function() {
+  var isOnline = sockets.isOnline = function() {
     return isConnected;
   };
 

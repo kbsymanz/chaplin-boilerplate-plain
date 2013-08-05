@@ -1,7 +1,8 @@
 define([
   'chaplin',
+  'lib/utils',
   'models/base/model'
-], function(Chaplin, Model) {
+], function(Chaplin, Utils, Model) {
   'use strict';
 
   var serverDelay = 0  // milliseconds to delay to emulate remote server, 0 to disable
@@ -40,8 +41,9 @@ define([
       model.unset('results');
       model.set('isSearching', true);
       setTimeout(function() {
-        Chaplin.mediator.publish('search', opts, function(data) {
+        Chaplin.mediator.publish('search', opts, function(err, data) {
           model.set('isSearching', false);
+          if (err) return Utils.debug(err);
           model.set('results', lf2br(data));
         });
       }, serverDelay);
