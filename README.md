@@ -1,94 +1,36 @@
-![Chaplin](http://s3.amazonaws.com/imgly_production/3401027/original.png)
+# Chaplin Front-end for the Fortunes Server
 
-# Plain JS Boilerplate Application for Chaplin.js
+This is a proof of concept to illustrate the use of [Chaplin.js](http://chaplinjs.org) as a front-end framework for the [Fortunes Server](https://github.com/kbsymanz/fortunes-chaplin). The purpose of this project is to help our team decide on a client-side framework to use internally. If others find this useful, all the better.
 
-This is a boilerplate applicatoin built with [Chaplin.js](http://chaplinjs.org), an application structure on top of Backbone.js.
+In a manner similar to [ToDoMVC](http://todomvc.com/), the goal is to explore [Backbone](http://backbonejs.org/) based front-end client frameworks against a common backend. In this case, the [Fortunes Server](https://github.com/kbsymanz/fortunes-server) is our backend which provides a number of services to the client over [Socket.io](http://socket.io/). We are not interested per se in "fortunes" - the fortunes are data and the server offers services against the data. The server could have been implemented with any other dataset.
 
-While Chaplin itself is coded in CoffeeScript, any front-end developer can put the
-framework to use in their web applications.  This boilerplate serves as an example
-for how to build a Chaplin-powered application using plain javascript.  Chaplin
-(with the help of require.js) provides all the neccesary functionality and helpers
-to code a clean, modular, easy to read application without the syntactic sugar that
-CoffeeScript enables.
+These front-ends are on the list to be implemented.
 
-If you prefer coding in CoffeeScript, you should head over to the
-[CoffeeScript Chaplin Boilerplate](https://github.com/chaplinjs/chaplin-boilerplate).
+- [Chaplin.js](http://chaplinjs.org): (you are looking at it)
+- [Marionette](http://marionettejs.com/): to be implemented
+- [Aura](http://aurajs.com/): to be implemented
 
-## Running the Example
+## Primary technologies being explored/integrated
 
-Copy the contents of this folder to the document root of your favorite webserver.
-If you’re running a local webserver like Apache or Nginx, the URL is
-`http://localhost/` or similar.
+- Various Backbone based frameworks (see above)
+- [Socket.io](http://socket.io/)
+- [Bootstrap](http://twitter.github.io/bootstrap/)
+- [Requirejs](http://requirejs.org/)
+- [Handlebars](http://handlebarsjs.com/)
+- [HTML5 LocalStorage](http://en.wikipedia.org/wiki/Web_storage)
 
-It is necessary that you run the example in a `http://` context. Just opening the
-`index.html` via `file://` won’t work.
+## Installation of the server
 
-If you don’t have a webserver installed, [pushserve](https://github.com/paulmillr/pushserve)
-is a suggested HTTP server with simple syntax and HTML5 pushState support.
-Install it with nodejs package manager: `npm install -g pushserve` and then launch `pushserve`.
+See the README on the [fortunes-server](https://github.com/kbsymanz/fortunes-server) project. This has to be done first because the clients are not meant to be run stand-alone.
 
-If the boilerplate is running correctly, you will see a “Hello World!” message.
+## Installation of the clients
 
-If your JavaScript app is located in a subfolder on your domain, for example at
-`http://localhost/my-chaplin-app/`, you need to configure the Chaplin.Router
-accordingly. Please open the `application.js` file and edit
-[the `initRouter` call](https://github.com/chaplinjs/chaplin-boilerplate-plain/blob/master/js/application.js#L22-L28).
-Change the `root` option accordingly, for example:
+You installed the server, right? If so, clone each client project that you want into it's own directory.
 
-```
-this.initRouter(routes, { root: '/my-chaplin-app/' });
-```
+    git clone https://github.com/kbsymanz/fortunes-chaplin.git
 
-## Architectural Documentation
+## Running the server and clients
 
-### Directory Structure
-
-This example has a standard Chaplin MVC directory structure:
-
-- `js/models`
-- `js/views`
-- `js/controllers`
-- `js/libs`
-
-All vendor libraries like jQuery and Backbone are located `js/vendor/`.
-
-This repository also contains a recent built of the Chaplin library in `js/vendor/chaplin-*.js`.
+See the README on the [fortunes-server](https://github.com/kbsymanz/fortunes-server) project on how to start the server, including with various options. Then navigate to __127.0.0.1:9000__ (default unless you changed it with one of those options outlined on the server project).
 
 
-### Application Startup
-
-There are two special files which are responsible for the application bootstrap:
-
-- `js/application.js`
-- `js/routes.js`
-
-`application.js` is the application root class which inherits from `Chaplin.Application`. It starts up all Chaplin core modules and starts the routing. It is loaded and instantiated in `index.html`.
-
-`routes.js` contains all application routes which map URLs to controller actions.
-
-### Templating
-
-Since Chaplin is template-engine agnostic, you have to decide which templating solution you want to use and how you want to load the templates. This example uses [Handlebars](http://handlebarsjs.com/) templates and loads them on-demand using the [RequireJS Text](http://requirejs.org/docs/api.html#text) plugin.
-
-Chaplin expects that views implement the `getTemplateFunction` method which needs to return the actual templating function. Since all views in this example use the same templating solution, `getTemplateFunction` is provided once by two base classes all other views inherit from:
-
-- `js/views/base/view.js`
-- `js/views/base/collection_view.js`
-
-The actual `.hbs` template files are located in the `js/templates` directory.
-
-### Application-specific Extensions
-
-To ease the development, this repository also provides application-specific base classes for models, collections and controllers. They inherit from the Chaplin base classes:
-
-- `js/models/base/model.js`
-- `js/models/base/collection.js`
-- `js/controllers/base/controller.js`
-
-Furthermore, `js/lib/support.js` and `js/lib/utils.js` demonstrate how to extend the feature testing and utility files of Chaplin.
-
-Last but not least, this example uses a specific `Layout` class which can be found in `js/views/layout.js`.
-
-## [The Cast](https://github.com/chaplinjs/chaplin/blob/master/AUTHORS.md#the-cast)
-
-## [The Producers](https://github.com/chaplinjs/chaplin/blob/master/AUTHORS.md#the-producers)
